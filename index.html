@@ -114,6 +114,20 @@ body.terkunci{overflow:hidden}
 main{padding-bottom:0}
 footer{padding-bottom:96px}
 
+/* ===== Ucapan & doa ===== */
+#ucapan{background:var(--lilac)}
+#hadiah{background:var(--mauve)}
+.chip{border:1px solid var(--emas);background:transparent;color:var(--plum);font:inherit;font-size:.82rem;padding:4px 14px;border-radius:999px;cursor:pointer;transition:background .2s,color .2s}
+.chip:hover{background:var(--emas);color:#fff}
+.jumlah-ucapan{letter-spacing:.2em;font-size:.8rem;color:var(--abu);text-transform:uppercase}
+.daftar-ucapan{max-height:460px;overflow-y:auto;padding-right:6px}
+.ucapan{display:flex;gap:14px;background:#fff;border:1px solid rgba(176,141,87,.4);padding:16px 18px;margin-bottom:12px}
+.avatar{flex:0 0 44px;width:44px;height:44px;border-radius:50%;background:var(--plum);color:var(--emas-terang);display:flex;align-items:center;justify-content:center;font:400 1.3rem 'Italiana',serif}
+.ucapan > div:last-child{min-width:0}
+.ucapan h4{font:400 1.25rem 'Italiana',serif;margin:0}
+.ucapan small{color:var(--abu)}
+.ucapan p{margin:6px 0 0;white-space:pre-line;overflow-wrap:anywhere}
+
 /* ===== Muncul saat digulir ===== */
 .js .reveal{opacity:0;transform:translateY(26px);transition:opacity .9s ease,transform .9s ease}
 .js .reveal.tampil{opacity:1;transform:none}
@@ -121,6 +135,7 @@ footer{padding-bottom:96px}
 @media (max-width:575px){
   section{padding:72px 0}
   .hero::before{inset:12px}
+  .nav-bawah a{padding:6px 9px}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -279,8 +294,37 @@ footer{padding-bottom:96px}
     </div>
   </section>
 
+  <!-- ===== Ucapan & doa ===== -->
+  <section id="ucapan">
+    <div class="container" style="max-width:640px">
+      <h2 class="judul text-center">Ucapan &amp; doa</h2>
+      <div class="garis"></div>
+      <form class="form-kartu mb-4" id="formUcapan" novalidate>
+        <div class="mb-3">
+          <label for="uNama" class="form-label">Nama</label>
+          <input type="text" class="form-control" id="uNama" maxlength="40" autocomplete="name" required>
+          <div class="invalid-feedback">Isi nama Anda.</div>
+        </div>
+        <div class="mb-2">
+          <label for="uPesan" class="form-label">Ucapan</label>
+          <textarea class="form-control" id="uPesan" rows="3" maxlength="300" required></textarea>
+          <div class="invalid-feedback">Tulis ucapan Anda.</div>
+        </div>
+        <div class="d-flex flex-wrap gap-2 mb-3" id="ucapanCepat">
+          <button type="button" class="chip">Selamat menikah!</button>
+          <button type="button" class="chip">Semoga sakinah, mawaddah, warahmah.</button>
+          <button type="button" class="chip">Bahagia selalu!</button>
+        </div>
+        <button type="submit" class="btn btn-undangan w-100">Kirim ucapan</button>
+        <div class="alert alert-success mt-3 d-none" id="ucapanOk" role="status">Terima kasih, ucapan Anda sudah ditambahkan.</div>
+      </form>
+      <p class="jumlah-ucapan text-center" id="jumlahUcapan"></p>
+      <div class="daftar-ucapan" id="daftarUcapan" aria-live="polite"></div>
+    </div>
+  </section>
+
   <!-- ===== Amplop digital ===== -->
-  <section class="text-center">
+  <section class="text-center" id="hadiah">
     <div class="container">
       <h2 class="judul">Hadiah pernikahan</h2>
       <div class="garis"></div>
@@ -299,7 +343,7 @@ footer{padding-bottom:96px}
 </footer>
 
 <nav class="nav-bawah" aria-label="Navigasi bagian">
-  <a href="#beranda">Awal</a><a href="#mempelai">Mempelai</a><a href="#acara">Acara</a><a href="#rsvp">RSVP</a>
+  <a href="#beranda">Awal</a><a href="#mempelai">Mempelai</a><a href="#acara">Acara</a><a href="#rsvp">RSVP</a><a href="#ucapan">Ucapan</a>
 </nav>
 
 <!-- ===== Modal rekening (Bootstrap) ===== -->
@@ -398,6 +442,76 @@ if("IntersectionObserver" in window){
 }else{
   elemen.forEach(el => el.classList.add("tampil"));
 }
+
+// ===== Ucapan & doa (tersimpan di browser perangkat ini) =====
+const KUNCI_UCAPAN = "ucapan-azizah-randi";
+// Contoh ucapan awal: hapus atau ganti sesuai kebutuhan
+const contohUcapan = [
+  {nama:"Sahabat Azizah", pesan:"Selamat menikah, Azizah & Randi! Semoga sakinah, mawaddah, warahmah.", waktu:new Date("2026-10-24T09:15:00+07:00").getTime()},
+  {nama:"Teman Kuliah", pesan:"Barakallahu lakuma wa baraka 'alaikuma. Bahagia selalu sampai tua ya!", waktu:new Date("2026-10-25T20:40:00+07:00").getTime()},
+  {nama:"Tetangga", pesan:"Selamat berbahagia. Semoga lancar sampai hari H.", waktu:new Date("2026-10-27T07:05:00+07:00").getTime()}
+];
+
+function ambilUcapan(){
+  try{ return JSON.parse(localStorage.getItem(KUNCI_UCAPAN)) || []; }catch{ return []; }
+}
+function simpanUcapan(daftar){
+  try{ localStorage.setItem(KUNCI_UCAPAN, JSON.stringify(daftar.slice(0, 100))); }catch{}
+}
+function waktuLalu(ts){
+  const s = Math.floor((Date.now() - ts) / 1000);
+  if(s < 60) return "Baru saja";
+  if(s < 3600) return Math.floor(s / 60) + " menit lalu";
+  if(s < 86400) return Math.floor(s / 3600) + " jam lalu";
+  if(s < 2592000) return Math.floor(s / 86400) + " hari lalu";
+  return new Date(ts).toLocaleDateString("id-ID", {day:"numeric", month:"long", year:"numeric"});
+}
+function tampilkanUcapan(){
+  const semua = [...ambilUcapan(), ...contohUcapan].sort((a, b) => b.waktu - a.waktu);
+  document.getElementById("jumlahUcapan").textContent = semua.length + " ucapan";
+  document.getElementById("daftarUcapan").replaceChildren(...semua.map(u => {
+    const item = document.createElement("article");
+    item.className = "ucapan";
+    const avatar = document.createElement("div");
+    avatar.className = "avatar";
+    avatar.textContent = (u.nama.trim()[0] || "?").toUpperCase();
+    const isi = document.createElement("div");
+    const nama = document.createElement("h4");
+    nama.textContent = u.nama;
+    const waktu = document.createElement("small");
+    waktu.textContent = waktuLalu(u.waktu);
+    const pesan = document.createElement("p");
+    pesan.textContent = u.pesan;
+    isi.append(nama, waktu, pesan);
+    item.append(avatar, isi);
+    return item;
+  }));
+}
+document.getElementById("ucapanCepat").addEventListener("click", e => {
+  const chip = e.target.closest(".chip");
+  if(!chip) return;
+  const kolom = document.getElementById("uPesan");
+  kolom.value = (kolom.value ? kolom.value + " " : "") + chip.textContent;
+  kolom.focus();
+});
+document.getElementById("formUcapan").addEventListener("submit", e => {
+  e.preventDefault();
+  const f = e.target;
+  f.classList.add("was-validated");
+  if(!f.checkValidity()) return;
+  const daftar = ambilUcapan();
+  daftar.unshift({
+    nama: document.getElementById("uNama").value.trim(),
+    pesan: document.getElementById("uPesan").value.trim(),
+    waktu: Date.now()
+  });
+  simpanUcapan(daftar);
+  f.reset(); f.classList.remove("was-validated");
+  tampilkanUcapan();
+  document.getElementById("daftarUcapan").scrollTop = 0;
+  document.getElementById("ucapanOk").classList.remove("d-none");
+});
+tampilkanUcapan();
 
 // ===== Hitung mundur (ubah tanggal sesuai acara) =====
 const target = new Date("2027-01-16T08:00:00+07:00").getTime();
