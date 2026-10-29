@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#3b2a3d">
+<title>Undangan Pernikahan – Azizah &amp; Randi</title>
+<!-- Bootstrap 5 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Jost:wght@300;400;500&family=Pinyon+Script&display=swap" rel="stylesheet">
+<style>
+:root{
+  --plum:#3b2a3d;        /* ungu tua */
+  --plum-gelap:#2a1c2c;  /* ungu paling gelap */
+  --lilac:#f6f2f7;       /* latar */
+  --mauve:#e9e0ed;       /* latar bagian */
+  --emas:#b08d57;        /* aksen */
+  --emas-terang:#d9bb8a; /* aksen di latar gelap */
+  --abu:#6b5d6e;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Jost',sans-serif;font-weight:300;color:var(--plum);background:var(--lilac);line-height:1.85}
+h1,h2,h3,.nama{font-family:'Italiana',serif;font-weight:400}
+.script{font-family:'Pinyon Script',cursive;font-weight:400}
+.emas-terang{color:var(--emas-terang)}
+.spasi{letter-spacing:.35em;font-size:.85rem}
+section{padding:96px 0}
+:focus-visible{outline:3px solid var(--emas);outline-offset:3px}
+
+.judul{font-size:clamp(2.1rem,5vw,3rem);margin-bottom:6px;letter-spacing:.02em}
+/* Pembatas ornamen: garis emas dengan belah ketupat di tengah */
+.garis{width:140px;height:1px;background:linear-gradient(90deg,transparent,var(--emas),transparent);margin:20px auto 40px;position:relative}
+.garis::after{content:"";position:absolute;left:50%;top:50%;width:8px;height:8px;background:var(--emas);transform:translate(-50%,-50%) rotate(45deg)}
+
+/* ===== Tombol ===== */
+.btn-undangan{background:var(--plum);color:#fff;border:1px solid var(--plum);border-radius:0;padding:12px 34px;letter-spacing:.08em;transition:background .25s,border-color .25s,color .25s}
+.btn-undangan:hover{background:var(--emas);border-color:var(--emas);color:#fff}
+.btn-garis{background:transparent;color:var(--plum);border:1px solid var(--plum);border-radius:0;padding:12px 30px;letter-spacing:.08em;transition:background .25s,color .25s}
+.btn-garis:hover{background:var(--plum);color:#fff}
+
+/* ===== Tombol musik ===== */
+.btn-musik{position:fixed;top:16px;right:16px;z-index:1500;width:46px;height:46px;border-radius:50%;border:1px solid var(--emas-terang);background:rgba(42,28,44,.85);color:var(--emas-terang);display:flex;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(6px)}
+.btn-musik:hover{background:var(--emas);color:#fff}
+.btn-musik.main svg{animation:putar 4s linear infinite}
+@keyframes putar{to{transform:rotate(360deg)}}
+
+/* ===== Cover ===== */
+#cover{position:fixed;inset:0;z-index:2000;color:#fff;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;background:radial-gradient(ellipse at 50% 0%,#5a4060 0,var(--plum) 55%,var(--plum-gelap) 100%);transition:transform 1s ease,opacity 1s ease}
+#cover::before,#cover::after{content:"";position:absolute;pointer-events:none}
+#cover::before{inset:16px;border:1px solid rgba(217,187,138,.6)}
+#cover::after{inset:24px;border:1px solid rgba(217,187,138,.25)}
+#cover.tutup{transform:translateY(-100%);opacity:0;pointer-events:none}
+#cover .nama{font-size:clamp(3rem,11vw,5.8rem);line-height:1.1}
+#cover .tamu{border-top:1px solid var(--emas-terang);border-bottom:1px solid var(--emas-terang);display:inline-block;padding:10px 34px;margin:22px 0 30px}
+#cover .btn-undangan{background:var(--emas);border-color:var(--emas)}
+#cover .btn-undangan:hover{background:#fff;border-color:#fff;color:var(--plum)}
+#cover .catatan{font-size:.8rem;opacity:.7}
+.cover-isi{position:relative}
+
+/* ===== Hero ===== */
+.hero{position:relative;overflow:hidden;min-height:100vh;display:flex;align-items:center;text-align:center;color:#fff;
+  background:radial-gradient(circle at 50% 0%,rgba(176,141,87,.28),transparent 55%),linear-gradient(165deg,#503a56,var(--plum-gelap))}
+.hero::before{content:"";position:absolute;inset:20px;border:1px solid rgba(217,187,138,.35);pointer-events:none}
+.hero .container{position:relative;z-index:1}
+.hero .nama{font-size:clamp(3.2rem,11vw,6.8rem);line-height:1.1}
+.hero .tanggal{letter-spacing:.35em;font-size:1rem;border-top:1px solid rgba(217,187,138,.5);border-bottom:1px solid rgba(217,187,138,.5);display:inline-block;padding:10px 26px}
+.gulir{position:absolute;left:50%;bottom:34px;width:1px;height:56px;background:linear-gradient(var(--emas-terang),transparent);animation:turun 2.2s ease-in-out infinite}
+@keyframes turun{0%,100%{transform:scaleY(.4);transform-origin:top;opacity:.5}50%{transform:scaleY(1);transform-origin:top;opacity:1}}
+
+/* Kelopak yang jatuh pelan */
+.kelopak{position:absolute;inset:0;pointer-events:none}
+.kelopak span{position:absolute;top:-30px;background:rgba(217,187,138,.55);border-radius:100% 0 100% 0;animation:jatuh linear infinite}
+@keyframes jatuh{to{transform:translate3d(var(--x),115vh,0) rotate(540deg)}}
+
+/* ===== Mempelai ===== */
+.foto{width:210px;height:280px;margin:0 auto 26px;padding:8px;border:1px solid var(--emas);border-radius:105px 105px 0 0;box-shadow:10px 10px 0 var(--mauve)}
+.foto img{width:100%;height:100%;object-fit:cover;border-radius:97px 97px 0 0;display:block}
+#mempelai .nama{font-size:2.1rem;margin-bottom:4px}
+#mempelai .dan{font-size:5rem;line-height:1;color:var(--emas)}
+
+/* ===== Countdown ===== */
+#countdown{background:radial-gradient(circle at 50% 0%,#5a4060,var(--plum) 60%);color:#fff;text-align:center}
+.hitung{min-width:88px;padding:18px 10px;border:1px solid rgba(217,187,138,.6);background:rgba(255,255,255,.04)}
+.hitung strong{display:block;font:400 2.6rem 'Italiana',serif;line-height:1.1;color:var(--emas-terang)}
+.hitung small{letter-spacing:.2em;font-size:.7rem}
+
+/* ===== Acara ===== */
+#acara{background:var(--mauve)}
+.kartu{position:relative;background:#fff;padding:48px 28px;height:100%;text-align:center;box-shadow:0 10px 30px rgba(59,42,61,.08)}
+.kartu::before{content:"";position:absolute;inset:10px;border:1px solid rgba(176,141,87,.55);pointer-events:none}
+.kartu h3{font-size:2rem;margin-bottom:14px}
+
+/* ===== Galeri ===== */
+.galeri .item{overflow:hidden;border:1px solid var(--emas);padding:6px;background:#fff;cursor:zoom-in}
+.galeri .item img{aspect-ratio:1/1;object-fit:cover;display:block;transition:transform .6s ease}
+.galeri .item:hover img{transform:scale(1.07)}
+
+/* ===== Form ===== */
+#rsvp{background:var(--mauve)}
+.form-kartu{background:#fff;padding:32px 28px;border:1px solid rgba(176,141,87,.5);box-shadow:0 10px 30px rgba(59,42,61,.08)}
+.form-control,.form-select{border-radius:0;border-color:#b9a9c0;background:#fff}
+.form-control:focus,.form-select:focus{border-color:var(--emas);box-shadow:0 0 0 .2rem rgba(176,141,87,.25)}
+
+footer{background:var(--plum-gelap);color:rgba(255,255,255,.78);text-align:center;padding:56px 0 48px}
+footer .nama{font-size:2.4rem;color:#fff}
+
+/* ===== Navigasi bawah ===== */
+.nav-bawah{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:1000;display:flex;gap:2px;padding:6px 10px;border-radius:999px;background:rgba(42,28,44,.88);backdrop-filter:blur(8px);border:1px solid rgba(217,187,138,.4);white-space:nowrap}
+.nav-bawah a{color:#fff;text-decoration:none;font-size:.78rem;letter-spacing:.06em;padding:6px 12px;border-radius:999px;transition:background .2s}
+.nav-bawah a:hover{background:var(--emas)}
+body.terkunci{overflow:hidden}
+main{padding-bottom:0}
+footer{padding-bottom:96px}
+
+/* ===== Muncul saat digulir ===== */
+.js .reveal{opacity:0;transform:translateY(26px);transition:opacity .9s ease,transform .9s ease}
+.js .reveal.tampil{opacity:1;transform:none}
+
+@media (max-width:575px){
+  section{padding:72px 0}
+  .hero::before{inset:12px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  #cover,.js .reveal,.galeri .item img{transition:none}
+  .js .reveal{opacity:1;transform:none}
+  .kelopak,.gulir,.btn-musik.main svg{animation:none}
+}
+</style>
+</head>
+<body class="terkunci">
+
+<!-- ===== Musik latar: letakkan file di folder musik/ dengan nama coming-up-roses.mp3 ===== -->
+<audio id="musik" src="roses.mp3" loop preload="auto"></audio>
+<button class="btn-musik" id="btnMusik" aria-label="Putar musik" aria-pressed="false">
+  <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M9 3v11.2A3.5 3.5 0 1 0 11 17.4V8h7V3z"/></svg>
+</button>
+
+<!-- ===== Cover ===== -->
+<div id="cover">
+  <div class="cover-isi">
+    <p class="mb-2 spasi">UNDANGAN PERNIKAHAN</p>
+    <h1 class="nama">Azizah <span class="script emas-terang">&amp;</span> Randi</h1>
+    <p class="mt-4 mb-0">Kepada Yth. Bapak/Ibu/Saudara/i</p>
+    <p class="tamu fs-5" id="namaTamu">Nama Tamu</p><br>
+    <button class="btn btn-undangan" id="btnBuka">Buka undangan</button>
+    <p class="catatan mt-3 mb-0">Undangan ini dilengkapi musik latar.</p>
+  </div>
+</div>
+
+<main>
+  <!-- ===== Hero ===== -->
+  <header class="hero" id="beranda">
+    <div class="kelopak" id="kelopak" aria-hidden="true"></div>
+    <div class="container">
+      <p class="script fs-2 mb-3 emas-terang">Menuju lembaran baru, merajut sisa waktu bersama</p>
+      <h2 class="nama">Azizah <span class="script emas-terang">&amp;</span> Randi</h2>
+      <p class="tanggal mt-4">SABTU, 16 JANUARI 2027</p>
+    </div>
+    <span class="gulir" aria-hidden="true"></span>
+  </header>
+
+  <!-- ===== Mempelai ===== -->
+  <section id="mempelai" class="text-center">
+    <div class="container">
+      <h2 class="judul">Mempelai</h2>
+      <div class="garis"></div>
+      <p class="mx-auto mb-5" style="max-width:560px">Di antara takdir yang tertulis, kami menemukan jalan untuk melangkah bersama. Dengan memohon rahmat Tuhan Yang Maha Esa, kami bermaksud mengikat janji suci pernikahan.</p>
+      <div class="row align-items-center g-5">
+        <div class="col-md-5">
+          <div class="foto"><img src="https://i.pinimg.com/1200x/e5/a4/9a/e5a49aab69bf5ecb4b5637ca04962c81.jpg" alt="Foto Azizah"></div>
+          <h3 class="nama">Azizah </h3>
+          <p>Putri dari Bapak  &amp; Ibu </p>
+        </div>
+        <div class="col-md-2 dan script">&amp;</div>
+        <div class="col-md-5">
+          <div class="foto"><img src="https://i.pinimg.com/1200x/8a/fa/08/8afa0809ce1c463482ccdfb70bf6ed15.jpg" alt="Foto Randi"></div>
+          <h3 class="nama">Randi Agung Priandana</h3>
+          <p>Putra dari Bapak  &amp; Ibu </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Countdown ===== -->
+  <section id="countdown">
+    <div class="container">
+      <h2 class="judul">Menuju hari bahagia</h2>
+      <div class="garis"></div>
+      <div class="d-flex justify-content-center flex-wrap gap-3" id="hitungan">
+        <div class="hitung"><strong id="hari">0</strong><small>HARI</small></div>
+        <div class="hitung"><strong id="jam">0</strong><small>JAM</small></div>
+        <div class="hitung"><strong id="menit">0</strong><small>MENIT</small></div>
+        <div class="hitung"><strong id="detik">0</strong><small>DETIK</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Acara ===== -->
+  <section id="acara" class="text-center">
+    <div class="container">
+      <h2 class="judul">Rangkaian acara</h2>
+      <div class="garis"></div>
+      <div class="row g-4 justify-content-center">
+        <div class="col-md-5">
+          <div class="kartu">
+            <h3>Akad Nikah</h3>
+            <p class="mb-1">Sabtu, 16 Januari 2027</p>
+            <p class="mb-1">08.00 – 10.00 WIB</p>
+            <p>Masjid Al-Ikhlas<br>Jl. Melati No. 5, Jakarta Selatan</p>
+          </div>
+        </div>
+        <div class="col-md-5">
+          <div class="kartu">
+            <h3>Resepsi</h3>
+            <p class="mb-1">Sabtu, 16 Januari 2027</p>
+            <p class="mb-1">11.00 – 14.00 WIB</p>
+            <p>Gedung Graha Bunga<br>Jl. Kenanga No. 20, Jakarta Selatan</p>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-center flex-wrap gap-3 mt-5">
+        <a class="btn btn-undangan" href="https://maps.google.com" target="_blank" rel="noopener">Lihat lokasi di peta</a>
+        <a class="btn btn-garis" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Pernikahan+Azizah+%26+Randi&dates=20270116T010000Z/20270116T070000Z" target="_blank" rel="noopener">Simpan ke kalender</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Galeri ===== -->
+  <section id="galeri" class="text-center">
+    <div class="container">
+      <h2 class="judul">Galeri</h2>
+      <div class="garis"></div>
+      <div class="row g-3 galeri">
+        <div class="col-6 col-md-4"><div class="item"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGtInkGso2z7HfjsWsfY5Td-px7YKPnR6ppQ6hd17EpQ&s=10" class="img-fluid w-100" alt="Foto 1"></div></div>
+        <div class="col-6 col-md-4"><div class="item"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWM6n6eip689DkCUIW-hrH7iq3vKJqnYFX0hqIlQIw-A&s=10" class="img-fluid w-100" alt="Foto 2"></div></div>
+        <div class="col-6 col-md-4"><div class="item"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFPRdytJ3V4q_BwKS2XgUmrYFLAEqdDzH1y-02LiMPuA&s=10" class="img-fluid w-100" alt="Foto 3"></div></div>
+        <div class="col-6 col-md-4"><div class="item"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3Pvk2EMK0HlAye-z8cgigFGLRDiCmlPGW2tol5aSWCw&s=10" class="img-fluid w-100" alt="Foto 4"></div></div>
+        <div class="col-6 col-md-4"><div class="item"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvdw0vDVa_t57BhPt8kS2zdBUx4uAn_aPYWZjZYGW0SA&s=10" class="img-fluid w-100" alt="Foto 5"></div></div>
+        <div class="col-6 col-md-4"><div class="item"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRv-AZ97agELqC8hH1fB_Puo5ry5LowEu11f-xtfHrFjA&s=10" class="img-fluid w-100" alt="Foto 6"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RSVP ===== -->
+  <section id="rsvp">
+    <div class="container" style="max-width:560px">
+      <h2 class="judul text-center">Konfirmasi kehadiran</h2>
+      <div class="garis"></div>
+      <form class="needs-validation form-kartu" id="formRsvp" novalidate>
+        <div class="mb-3">
+          <label for="rNama" class="form-label">Nama</label>
+          <input type="text" class="form-control" id="rNama" required>
+          <div class="invalid-feedback">Isi nama Anda.</div>
+        </div>
+        <div class="mb-3">
+          <label for="rHadir" class="form-label">Kehadiran</label>
+          <select class="form-select" id="rHadir" required>
+            <option value="">Pilih salah satu</option>
+            <option>Hadir</option>
+            <option>Tidak bisa hadir</option>
+          </select>
+          <div class="invalid-feedback">Pilih status kehadiran.</div>
+        </div>
+        <div class="mb-3">
+          <label for="rJumlah" class="form-label">Jumlah tamu</label>
+          <input type="number" class="form-control" id="rJumlah" min="1" max="5" value="1" required>
+          <div class="invalid-feedback">Isi jumlah tamu antara 1 dan 5.</div>
+        </div>
+        <div class="mb-4">
+          <label for="rUcapan" class="form-label">Ucapan &amp; doa</label>
+          <textarea class="form-control" id="rUcapan" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-undangan w-100">Kirim konfirmasi</button>
+        <div class="alert alert-success mt-3 d-none" id="rsvpOk" role="status">Terima kasih, konfirmasi Anda sudah kami terima.</div>
+      </form>
+    </div>
+  </section>
+
+  <!-- ===== Amplop digital ===== -->
+  <section class="text-center">
+    <div class="container">
+      <h2 class="judul">Hadiah pernikahan</h2>
+      <div class="garis"></div>
+      <p class="mx-auto mb-4" style="max-width:520px">Kehadiran dan doa Anda sudah menjadi hadiah terbaik. Bila ingin mengirim tanda kasih, Anda dapat menggunakan rekening berikut.</p>
+      <button class="btn btn-garis" data-bs-toggle="modal" data-bs-target="#modalHadiah">Lihat rekening</button>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <p class="mb-3">Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu.</p>
+    <div class="garis mt-4 mb-3"></div>
+    <p class="nama mb-0">Azizah <span class="script emas-terang">&amp;</span> Randi</p>
+  </div>
+</footer>
+
+<nav class="nav-bawah" aria-label="Navigasi bagian">
+  <a href="#beranda">Awal</a><a href="#mempelai">Mempelai</a><a href="#acara">Acara</a><a href="#rsvp">RSVP</a>
+</nav>
+
+<!-- ===== Modal rekening (Bootstrap) ===== -->
+<div class="modal fade" id="modalHadiah" tabindex="-1" aria-labelledby="judulModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius:0">
+      <div class="modal-header">
+        <h5 class="modal-title" id="judulModal">Rekening hadiah</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+      </div>
+      <div class="modal-body text-center">
+        <p class="mb-0">Bank BCA</p>
+        <p class="fs-4 mb-0" id="noRek">1234567890</p>
+        <p>a.n. Azizah </p>
+        <button class="btn btn-garis btn-sm" id="salinRek">Salin nomor</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Modal pratinjau foto galeri ===== -->
+<div class="modal fade" id="modalFoto" tabindex="-1" aria-label="Pratinjau foto" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content bg-transparent border-0">
+      <button type="button" class="btn-close btn-close-white ms-auto mb-2" data-bs-dismiss="modal" aria-label="Tutup"></button>
+      <img id="fotoBesar" class="img-fluid" alt="">
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.documentElement.classList.add("js");
+
+// ===== Nama tamu dari URL, contoh: index.html?to=Budi+Santoso =====
+const params = new URLSearchParams(location.search);
+document.getElementById("namaTamu").textContent = params.get("to") || "Tamu Undangan";
+
+// ===== Musik latar =====
+const musik = document.getElementById("musik");
+const btnMusik = document.getElementById("btnMusik");
+musik.volume = 0.6;
+
+function setTombolMusik(main){
+  btnMusik.classList.toggle("main", main);
+  btnMusik.setAttribute("aria-pressed", main);
+  btnMusik.setAttribute("aria-label", main ? "Jeda musik" : "Putar musik");
+}
+btnMusik.addEventListener("click", () => {
+  if(musik.paused){
+    musik.play().then(() => setTombolMusik(true)).catch(() => setTombolMusik(false));
+  }else{
+    musik.pause(); setTombolMusik(false);
+  }
+});
+musik.addEventListener("error", () => {
+  btnMusik.title = "File musik tidak ditemukan: musik/coming-up-roses.mp3";
+  console.warn("File musik tidak ditemukan. Letakkan di musik/coming-up-roses.mp3");
+});
+
+// ===== Buka undangan (klik pengguna mengizinkan musik diputar otomatis) =====
+document.getElementById("btnBuka").addEventListener("click", () => {
+  document.getElementById("cover").classList.add("tutup");
+  document.body.classList.remove("terkunci");
+  window.scrollTo(0, 0);
+  musik.play().then(() => setTombolMusik(true)).catch(() => setTombolMusik(false));
+});
+
+// ===== Kelopak jatuh di hero =====
+(function(){
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const wadah = document.getElementById("kelopak");
+  for(let i = 0; i < 14; i++){
+    const k = document.createElement("span");
+    const ukuran = 8 + Math.random() * 10;
+    k.style.left = Math.random() * 100 + "%";
+    k.style.width = ukuran + "px";
+    k.style.height = ukuran * 1.3 + "px";
+    k.style.setProperty("--x", (Math.random() * 160 - 80) + "px");
+    k.style.animationDuration = 9 + Math.random() * 9 + "s";
+    k.style.animationDelay = -Math.random() * 14 + "s";
+    wadah.appendChild(k);
+  }
+})();
+
+// ===== Muncul saat digulir =====
+const elemen = document.querySelectorAll("section .container > *, footer .container > *");
+elemen.forEach(el => el.classList.add("reveal"));
+if("IntersectionObserver" in window){
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if(en.isIntersecting){ en.target.classList.add("tampil"); io.unobserve(en.target); }
+    });
+  }, {threshold:.12});
+  elemen.forEach(el => io.observe(el));
+}else{
+  elemen.forEach(el => el.classList.add("tampil"));
+}
+
+// ===== Hitung mundur (ubah tanggal sesuai acara) =====
+const target = new Date("2027-01-16T08:00:00+07:00").getTime();
+function hitung(){
+  const s = Math.max(0, target - Date.now());
+  document.getElementById("hari").textContent = Math.floor(s / 86400000);
+  document.getElementById("jam").textContent = Math.floor(s % 86400000 / 3600000);
+  document.getElementById("menit").textContent = Math.floor(s % 3600000 / 60000);
+  document.getElementById("detik").textContent = Math.floor(s % 60000 / 1000);
+}
+hitung(); setInterval(hitung, 1000);
+
+// ===== Pratinjau foto galeri =====
+const modalFoto = new bootstrap.Modal(document.getElementById("modalFoto"));
+document.querySelectorAll(".galeri img").forEach(img => {
+  img.addEventListener("click", () => {
+    const besar = document.getElementById("fotoBesar");
+    besar.src = img.src;
+    besar.alt = img.alt;
+    modalFoto.show();
+  });
+});
+
+// ===== Validasi RSVP dengan kelas Bootstrap =====
+document.getElementById("formRsvp").addEventListener("submit", e => {
+  e.preventDefault();
+  const f = e.target;
+  f.classList.add("was-validated");
+  if(f.checkValidity()){
+    document.getElementById("rsvpOk").classList.remove("d-none");
+    f.reset(); f.classList.remove("was-validated");
+  }
+});
+
+// ===== Salin nomor rekening =====
+document.getElementById("salinRek").addEventListener("click", async e => {
+  try{
+    await navigator.clipboard.writeText(document.getElementById("noRek").textContent);
+    e.target.textContent = "Tersalin";
+  }catch{ e.target.textContent = "Salin manual ya"; }
+});
+</script>
+</body>
+</html>
